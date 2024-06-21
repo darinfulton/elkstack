@@ -71,6 +71,12 @@ variable "delete_on_termination" {
   default     = true
 }
 
+variable "encrypt_root_volume" {
+  description = "Encrypt the root volume"
+  type        = bool
+  default     = true
+}
+
 variable "es_host_volume_size" {
   description = "The volume size for the Elasticsearch host"
   type        = number
@@ -83,3 +89,24 @@ variable "es_host_volume_type" {
   default     = "gp3"
 }
 
+############################################
+#  Elasticsearch Security Group Variables  #
+############################################
+
+variable "es_api_port" {
+  description = "The HTTP API call port for Elasticsearch"
+  type        = number
+  default     = 9200
+}
+
+variable "es_internal_port" {
+  description = "The internal cluster/node communication port for Elasticsearch"
+  type        = number
+  default     = 9300
+}
+
+variable "kibana_port" {
+  description = "The Kibana web application port"
+  type        = number
+  default     = 5601
+}

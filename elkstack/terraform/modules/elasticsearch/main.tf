@@ -26,7 +26,7 @@ resource "aws_instance" "es_host" {
 
   root_block_device {
     delete_on_termination = var.delete_on_termination
-    encrypted             = true
+    encrypted             = var.encrypt_root_volume
     volume_size           = var.es_host_volume_size
     volume_type           = var.es_host_volume_type
   }
@@ -45,14 +45,31 @@ resource "aws_security_group" "es_sg" {
   vpc_id      = aws_vpc.primary-vpc.id
 
   ingress {
-    description = "Elasticsearch HTTP API"
-    from_port   = 9200
-    to_port     = 9200
+    description = "Elasticsearch HTTP API calls"
+    from_port   = var.es_api_port
+    to_port     = var.es_api_port
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/8"]
   }
 
   ingress {
+    description = "Internal Elasticsearch node/cluster communication port"
+    from_port   = var.es_internal_port
+    to_port     = var.es_internal_port
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  ingress {
+    description = "Kibana incoming traffic - for Kibana web application"
+    from_port   = var.kibana_port
+    to_port     = var.kibana_port
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  ingress {
+    description = "Allows SSH traffic from internal network"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -60,19 +77,19 @@ resource "aws_security_group" "es_sg" {
   }
 
   ingress {
+    description = "HTTP traffic from internal network"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/8"]
   }
 
-
   ingress {
-    description = "Kibana HTTP API"
-    from_port   = 5601
-    to_port     = 5601
+    description = "HTTPS traffic from internal network"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8"]
+    cidr_blocks = [ "10.0.0.0/8" ]
   }
 
   egress {
