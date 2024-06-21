@@ -1,0 +1,7 @@
+/elkstack/terraform/.terraform/*
+/elkstack/terraform/*.tfstate
+/elkstack/terraform/*.tfstate.*
+/elkstack/terraform/*.tfvars
+/elkstack/terraform/*.tfplan
+/elkstack/terraform/crash.log
+/elkstack/terraform/.terraform.lock.hcl
