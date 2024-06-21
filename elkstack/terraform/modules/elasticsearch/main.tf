@@ -12,7 +12,7 @@ resource "aws_instance" "es_host" {
   subnet_id                   = var.es_subnet_id
   key_name                    = var.es_key_name
   iam_instance_profile        = var.iam_instance_profile
-  vpc_security_group_ids      = [aws_security_group.es_sg.id]
+  vpc_security_group_ids      = [  aws_security_group.es_sg.id  ]
   associate_public_ip_address = var.associate_public_ip_address
 
   tags = merge(
